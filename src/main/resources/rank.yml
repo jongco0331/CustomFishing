@@ -1,0 +1,13 @@
+rank:
+  - S
+  - A
+  - B
+  - C
+  - D
+
+fish-chance:
+  S: 1
+  A: 2
+  B: 10
+  C: 50
+  D: 150

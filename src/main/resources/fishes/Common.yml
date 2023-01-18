@@ -1,0 +1,21 @@
+common_fish:
+    rank: D
+    material: FISH
+    display-name: '&f[&7D&f] &7일반 물고기'
+    lore:
+      - '&7흔한 물고기다.'
+      - '&e길이 : <cm>cm'
+    glowing: true
+    cm:
+      min: 0.1
+      max: 0.7
+    price:
+      '0.1~0.5': 1000
+      '0.51~0.7': 2000
+    item:
+      '0.1~0.5':
+        material: FISH
+        count: 1
+      '0.51~0.7':
+        material: FISH
+        count: 2

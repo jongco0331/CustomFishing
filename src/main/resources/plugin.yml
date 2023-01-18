@@ -1,0 +1,5 @@
+name: CustomFishing
+version: '${version}'
+main: com.jonghyun.fishing.Fishing
+commands:
+  커스텀낚시:
