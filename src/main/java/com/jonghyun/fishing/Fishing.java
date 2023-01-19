@@ -58,11 +58,18 @@ public final class Fishing extends JavaPlugin {
                     String current = "■■■■■■■■■■■■■■■■■";
                     char[] a = current.toCharArray();
                     a[miniGame.getSelectedLoc()] = '□';
+                    a[miniGame.getSelectedLoc()+1] = '□';
                     a[miniGame.getCurrentLoc()] = '◎';
                     current = new String(a);
                     current = current.replaceAll("◎", "§a■§f").replaceAll("□", "§e■§f");
-                    p.sendTitle(current, "§7물고기의 체력 " + miniGame.getHealth() + "%", 0, 20, 0);
-                    p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                    String msg;
+                    if(miniGame.isFirst())
+                    {
+                        msg = Language.FISHING_GUIDELINE;
+                    } else {
+                        msg = Language.FISHING_FISH_HEALTH.replaceAll("<health>", miniGame.getHealth() + "");
+                    }
+                    p.sendTitle(current, msg, 0, 20, 0);
                 }
             }
         }, 2l, 2l);

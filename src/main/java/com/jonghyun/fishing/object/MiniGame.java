@@ -11,5 +11,6 @@ public class MiniGame {
     private int selectedLoc;
     private int health;
     private boolean isRightMode;
+    private boolean isFirst;
 
 }

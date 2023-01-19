@@ -3,9 +3,7 @@ package com.jonghyun.fishing.manager;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public final class RankManager {
 
@@ -20,9 +18,25 @@ public final class RankManager {
         return rankManager;
     }
 
-    @Getter @Setter
+    @Getter
     private List<String> ranks = new ArrayList<>();
-    @Getter @Setter
+    @Getter
     private HashMap<String, Integer> rankChance = new HashMap<>();
+
+    @Getter @Setter
+    private int chance = 0;
+
+    public String randomRank()
+    {
+        int selected = new Random().nextInt(chance);
+        int chance = 0;
+        for(Map.Entry<String, Integer> entry : rankChance.entrySet())
+        {
+            if(entry.getValue() + chance > selected)
+                return entry.getKey();
+            chance += entry.getValue();
+        }
+        return null;
+    }
 
 }

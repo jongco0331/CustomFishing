@@ -1,0 +1,10 @@
+FISH_SUCCESS_TITLE: '&f[ &b낚시 성공! &f]'
+FISH_SUCCESS_SUBTITLE: ''
+
+FISH_FAIL_TITLE: '&f[ &c낚시 실패! &f]'
+FISH_FAIL_SUBTITLE: '&7물고기가 저멀리 도망가버렸습니다'
+
+GET_FISH: '<cm>cm <fish> &f획득!'
+
+FISHING_GUIDELINE: '&7타이밍을 맞춰 스페이스바를 눌러주세요!'
+FISHING_FISH_HEALTH: '&7물고기의 체력 <health>%'

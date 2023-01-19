@@ -1,5 +1,8 @@
 package com.jonghyun.fishing.event.custom;
 
+import com.jonghyun.fishing.Fishing;
+import com.jonghyun.fishing.manager.FishManager;
+import com.jonghyun.fishing.object.MiniGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,7 +47,7 @@ public class PlayerJumpEvent extends PlayerEvent implements Cancellable {
         public static final Map<Player,Boolean> jumping = new HashMap<>();
         public static final double jump_vel_border = 0.4;
 
-        @EventHandler(priority = EventPriority.LOW)
+        @EventHandler(priority = EventPriority.LOWEST)
         public void onJump(PlayerMoveEvent event){
             Player player = event.getPlayer();
             double vy = player.getVelocity().getY();

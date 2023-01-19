@@ -1,5 +1,6 @@
 package com.jonghyun.fishing.manager;
 
+import com.jonghyun.fishing.loaders.ConfigLoader;
 import com.jonghyun.fishing.loaders.CustomFishLoader;
 import com.jonghyun.fishing.loaders.IDataLoader;
 import com.jonghyun.fishing.loaders.RankLoader;
@@ -29,6 +30,7 @@ public final class LoadManager {
         loaders.clear();
         loaders.add(new RankLoader());
         loaders.add(new CustomFishLoader());
+        loaders.add(new ConfigLoader());
 
         for(IDataLoader loader : loaders)
         {

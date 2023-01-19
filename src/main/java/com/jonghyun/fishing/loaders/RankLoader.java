@@ -19,10 +19,13 @@ public class RankLoader implements IDataLoader {
 
         rankManager.getRanks().addAll(StringUtil.colorize(rankYaml.getStringList("rank")));
         ConfigurationSection section = rankYaml.getConfigurationSection("fish-chance");
+        int chance = 0;
         for(String rank : section.getKeys(false))
         {
             rankManager.getRankChance().put(rank, section.getInt(rank));
+            chance += section.getInt(rank);
         }
+        rankManager.setChance(chance);
     }
 
     @Override
