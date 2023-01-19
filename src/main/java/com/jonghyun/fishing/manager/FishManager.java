@@ -5,8 +5,6 @@ import com.jonghyun.fishing.object.LengthFish;
 import com.jonghyun.fishing.object.MiniGame;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -60,11 +58,6 @@ public final class FishManager {
         meta.setLore(lore);
         fish.setItemMeta(meta);
         return new LengthFish(fish, length);
-    }
-
-    public IChatBaseComponent bukkitStackToChatComponent(ItemStack stack) {
-        net.minecraft.server.v1_12_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
-        return nms.C();
     }
 
 }

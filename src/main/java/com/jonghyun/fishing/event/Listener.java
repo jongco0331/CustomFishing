@@ -4,25 +4,27 @@ import com.jonghyun.fishing.Fishing;
 import com.jonghyun.fishing.Language;
 import com.jonghyun.fishing.event.custom.PlayerJumpEvent;
 import com.jonghyun.fishing.manager.FishManager;
+import com.jonghyun.fishing.manager.FishingBagManager;
 import com.jonghyun.fishing.object.LengthFish;
 import com.jonghyun.fishing.object.MiniGame;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_12_R1.ChatBaseComponent;
-import net.minecraft.server.v1_12_R1.ChatMessage;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Listener implements org.bukkit.event.Listener {
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e)
+    {
+        if(!FishingBagManager.getInstance().bagMap.containsKey(e.getPlayer().getUniqueId()))
+            FishingBagManager.getInstance().bagMap.put(e.getPlayer().getUniqueId(), new ArrayList<>());
+    }
 
     @EventHandler
     public void onFishing(PlayerFishEvent e)
@@ -68,7 +70,7 @@ public class Listener implements org.bukkit.event.Listener {
                     Bukkit.getServer().getScheduler().runTaskLater(Fishing.getPlugin(), () ->
                             e.getPlayer().sendTitle(Language.FISH_SUCCESS_TITLE, Language.FISH_SUCCESS_SUBTITLE, 0, 40, 0), 1);
                     LengthFish stack = FishManager.getInstance().getRandomLengthFish();
-                    e.getPlayer().getInventory().addItem(stack.getStack());
+                    FishingBagManager.getInstance().bagMap.get(e.getPlayer().getUniqueId()).add(stack.getStack());
                     e.getPlayer().sendMessage(Language.GET_FISH.replaceAll("<cm>", stack.getLength() + "")
                             .replaceAll("<fish>", stack.getStack().getItemMeta().getDisplayName()));
 

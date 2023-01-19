@@ -1,8 +1,10 @@
 package com.jonghyun.fishing;
 
+import com.jonghyun.fishing.commands.FishingBagCommand;
 import com.jonghyun.fishing.commands.FishingCommand;
 import com.jonghyun.fishing.event.Listener;
 import com.jonghyun.fishing.event.custom.PlayerJumpEvent;
+import com.jonghyun.fishing.gui.GuiFishingBag;
 import com.jonghyun.fishing.manager.FishManager;
 import com.jonghyun.fishing.manager.LoadManager;
 import com.jonghyun.fishing.object.MiniGame;
@@ -29,11 +31,13 @@ public final class Fishing extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         getServer().getPluginManager().registerEvents(new Listener(), this);
+        getServer().getPluginManager().registerEvents(new GuiFishingBag(), this);
         getServer().getPluginManager().registerEvents(new PlayerJumpEvent.CallJumpEvent(), this);
         LoadManager.getInstance().load();
         registerGlow();
 
         new FishingCommand();
+        new FishingBagCommand();
 
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BukkitRunnable() {
             @Override

@@ -1,9 +1,6 @@
 package com.jonghyun.fishing.manager;
 
-import com.jonghyun.fishing.loaders.ConfigLoader;
-import com.jonghyun.fishing.loaders.CustomFishLoader;
-import com.jonghyun.fishing.loaders.IDataLoader;
-import com.jonghyun.fishing.loaders.RankLoader;
+import com.jonghyun.fishing.loaders.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -31,6 +28,7 @@ public final class LoadManager {
         loaders.add(new RankLoader());
         loaders.add(new CustomFishLoader());
         loaders.add(new ConfigLoader());
+        loaders.add(new FishingBagLoader());
 
         for(IDataLoader loader : loaders)
         {
@@ -42,7 +40,7 @@ public final class LoadManager {
     {
         for(IDataLoader loader : loaders)
         {
-            loader.load();
+            loader.save();
         }
     }
 
