@@ -3,10 +3,10 @@ package com.jonghyun.fishing.event;
 import com.jonghyun.fishing.Fishing;
 import com.jonghyun.fishing.Language;
 import com.jonghyun.fishing.event.custom.PlayerJumpEvent;
-import com.jonghyun.fishing.manager.FishManager;
+import com.jonghyun.fishing.manager.FishingManager;
 import com.jonghyun.fishing.manager.FishingBagManager;
-import com.jonghyun.fishing.object.LengthFish;
-import com.jonghyun.fishing.object.MiniGame;
+import com.jonghyun.fishing.objects.fish.LengthFish;
+import com.jonghyun.fishing.objects.MiniGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
@@ -29,7 +29,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onFishing(PlayerFishEvent e)
     {
-        if(FishManager.getInstance().getMiniGameData().containsKey(e.getPlayer().getUniqueId()))
+        if(FishingManager.getInstance().getMiniGameData().containsKey(e.getPlayer().getUniqueId()))
             e.setCancelled(true);
         if(e.getState() == PlayerFishEvent.State.CAUGHT_FISH)
         {
@@ -40,20 +40,20 @@ public class Listener implements org.bukkit.event.Listener {
             }
             e.setExpToDrop(0);
             e.getCaught().remove();
-            FishManager.getInstance().getMiniGameData().put(e.getPlayer().getUniqueId(), new MiniGame());
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setSelectedLoc(new Random().nextInt(15));
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setHealth(100);
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setStart(true);
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setFirst(true);
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setRightMode(true);
-            FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setCurrentLoc(0);
+            FishingManager.getInstance().getMiniGameData().put(e.getPlayer().getUniqueId(), new MiniGame());
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setSelectedLoc(new Random().nextInt(15));
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setHealth(100);
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setStart(true);
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setFirst(true);
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setRightMode(true);
+            FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setCurrentLoc(0);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onJump(PlayerJumpEvent e)
     {
-        MiniGame miniGame = FishManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId());
+        MiniGame miniGame = FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId());
         if(miniGame == null)
             return;
         if(miniGame.isStart()) {
@@ -66,10 +66,10 @@ public class Listener implements org.bukkit.event.Listener {
                 e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                 if(miniGame.getHealth() == 0)
                 {
-                    FishManager.getInstance().getMiniGameData().remove(e.getPlayer().getUniqueId());
+                    FishingManager.getInstance().getMiniGameData().remove(e.getPlayer().getUniqueId());
                     Bukkit.getServer().getScheduler().runTaskLater(Fishing.getPlugin(), () ->
                             e.getPlayer().sendTitle(Language.FISH_SUCCESS_TITLE, Language.FISH_SUCCESS_SUBTITLE, 0, 40, 0), 1);
-                    LengthFish stack = FishManager.getInstance().getRandomLengthFish();
+                    LengthFish stack = FishingManager.getInstance().getRandomLengthFish();
                     FishingBagManager.getInstance().bagMap.get(e.getPlayer().getUniqueId()).add(stack.getStack());
                     e.getPlayer().sendMessage(Language.GET_FISH.replaceAll("<cm>", stack.getLength() + "")
                             .replaceAll("<fish>", stack.getStack().getItemMeta().getDisplayName()));
@@ -78,7 +78,7 @@ public class Listener implements org.bukkit.event.Listener {
             } else {
                 if(miniGame.isFirst())
                 {
-                    FishManager.getInstance().getMiniGameData().remove(e.getPlayer().getUniqueId());
+                    FishingManager.getInstance().getMiniGameData().remove(e.getPlayer().getUniqueId());
                     Bukkit.getServer().getScheduler().runTaskLater(Fishing.getPlugin(), () ->
                             e.getPlayer().sendTitle("§f[ §c낚시 실패! §f]", "§7물고기가 저멀리 도망가버렸습니다", 0, 40, 0), 1);
                 } else {

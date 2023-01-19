@@ -1,4 +1,4 @@
-package com.jonghyun.fishing.object;
+package com.jonghyun.fishing.objects;
 
 import lombok.Getter;
 import lombok.Setter;

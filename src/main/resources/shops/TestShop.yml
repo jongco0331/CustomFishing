@@ -1,0 +1,23 @@
+shapes:
+  '* * * * * * * * *
+  * a * * * * * * *
+  * * * * * * * * *
+  * * * * * * * * *
+  * * * * * * * * *
+  * * * * * * * * *'
+npc: 'test'
+components:
+  '*':
+    material: null
+  'a':
+    material: RAW_FISH
+    display-name: '&f[&7D&f] &7일반 물고기'
+    lore:
+      - '§70.1~0.5cm : 1000원 / 날생선 한개'
+      - '§70.51~0.7cm : 2000원 / 날생선 두개'
+    glowing: false
+    event:
+      left: 'SI common_fish' #좌클릭 이벤트 : SI(Sell Item) common_fish 아이템으로 반환
+      shift-left: 'SAI common_fish' #쉬프트 좌클릭 이벤트 : SAI(Sell All Item) common_fish 모든템 아이템으로 반환
+      right: 'SM common_fish' #우클릭 이벤트 : SM(Sell Money) common_fish 돈으로 반환
+      shift-right: 'SAM common_fish' #쉬프트 우클릭 이벤트: SAM(Sell All Money) common_fish 모든템 돈으로 반환

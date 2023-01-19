@@ -1,6 +1,6 @@
 package com.jonghyun.fishing.commands;
 
-import com.jonghyun.fishing.gui.GuiFishingBag;
+import com.jonghyun.fishing.guis.GuiFishingBag;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,6 +23,6 @@ public class FishingBagCommand extends SimpleCommand {
             new GuiFishingBag(p);
             return;
         }
-        new GuiFishingBag(p, Bukkit.getOfflinePlayer(args[0]).getPlayer());
+        new GuiFishingBag(p, Bukkit.getOfflinePlayer(args[0]));
     }
 }

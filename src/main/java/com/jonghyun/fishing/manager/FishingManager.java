@@ -1,8 +1,8 @@
 package com.jonghyun.fishing.manager;
 
-import com.jonghyun.fishing.object.CustomFish;
-import com.jonghyun.fishing.object.LengthFish;
-import com.jonghyun.fishing.object.MiniGame;
+import com.jonghyun.fishing.objects.fish.CustomFish;
+import com.jonghyun.fishing.objects.fish.LengthFish;
+import com.jonghyun.fishing.objects.MiniGame;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
@@ -14,16 +14,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public final class FishManager {
+public final class FishingManager {
 
-    private static FishManager fishManager = null;
+    private static FishingManager fishManager = null;
 
-    private FishManager() {}
+    private FishingManager() {}
 
-    public static FishManager getInstance()
+    public static FishingManager getInstance()
     {
         if(fishManager == null)
-            fishManager = new FishManager();
+            fishManager = new FishingManager();
         return fishManager;
     }
     @Getter @Setter
@@ -55,9 +55,29 @@ public final class FishManager {
         {
             lore.set(i, lore.get(i).replaceAll("<cm>", length + ""));
         }
+        String lengthStr = length + "";
+        String newLength = "";
+        char[] le = lengthStr.toCharArray();
+        for(char a : le)
+        {
+            newLength += "§" + a;
+        }
+        lore.set(0, lore.get(0) + " §L§E" + newLength);
         meta.setLore(lore);
         fish.setItemMeta(meta);
         return new LengthFish(fish, length);
     }
 
+    public double getLengthOfFish(ItemStack fish)
+    {
+        ItemMeta meta = fish.getItemMeta();
+        return Double.parseDouble(meta.getLore().get(0).split("§L§E")[1].replaceAll("§", ""));
+    }
+
+    public boolean isBetween(double current, double min, double max)
+    {
+        if(current >= min && current <= max)
+            return true;
+        return false;
+    }
 }

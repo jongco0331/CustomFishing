@@ -29,6 +29,7 @@ public final class LoadManager {
         loaders.add(new CustomFishLoader());
         loaders.add(new ConfigLoader());
         loaders.add(new FishingBagLoader());
+        loaders.add(new FishingShopLoader());
 
         for(IDataLoader loader : loaders)
         {

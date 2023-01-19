@@ -1,4 +1,4 @@
-package com.jonghyun.fishing.object;
+package com.jonghyun.fishing.objects.fish;
 
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;

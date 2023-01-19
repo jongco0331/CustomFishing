@@ -4,14 +4,18 @@ import com.jonghyun.fishing.commands.FishingBagCommand;
 import com.jonghyun.fishing.commands.FishingCommand;
 import com.jonghyun.fishing.event.Listener;
 import com.jonghyun.fishing.event.custom.PlayerJumpEvent;
-import com.jonghyun.fishing.gui.GuiFishingBag;
-import com.jonghyun.fishing.manager.FishManager;
+import com.jonghyun.fishing.guis.GuiFishingBag;
+import com.jonghyun.fishing.guis.shop.GuiHavingItems;
+import com.jonghyun.fishing.guis.shop.GuiHavingItems1;
+import com.jonghyun.fishing.guis.shop.GuiShop;
+import com.jonghyun.fishing.manager.FishingManager;
 import com.jonghyun.fishing.manager.LoadManager;
-import com.jonghyun.fishing.object.MiniGame;
+import com.jonghyun.fishing.objects.MiniGame;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,29 +26,41 @@ import java.util.UUID;
 public final class Fishing extends JavaPlugin {
 
     private static Fishing plugin;
+    private static Economy econ = null;
 
     public static Fishing getPlugin() {
         return plugin;
     }
 
+    public static Economy getEcon() {
+        return econ;
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
+        setupEconomy();
         getServer().getPluginManager().registerEvents(new Listener(), this);
         getServer().getPluginManager().registerEvents(new GuiFishingBag(), this);
+        getServer().getPluginManager().registerEvents(new GuiShop(), this);
+        getServer().getPluginManager().registerEvents(new GuiHavingItems(), this);
+        getServer().getPluginManager().registerEvents(new GuiHavingItems1(), this);
         getServer().getPluginManager().registerEvents(new PlayerJumpEvent.CallJumpEvent(), this);
         LoadManager.getInstance().load();
         registerGlow();
 
+
         new FishingCommand();
         new FishingBagCommand();
+
+
 
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new BukkitRunnable() {
             @Override
             public void run() {
                 for(Player p : Bukkit.getOnlinePlayers())
                 {
-                    HashMap<UUID, MiniGame> miniGameData = FishManager.getInstance().getMiniGameData();
+                    HashMap<UUID, MiniGame> miniGameData = FishingManager.getInstance().getMiniGameData();
                     if(!miniGameData.containsKey(p.getUniqueId()))
                         continue;
                     if(!miniGameData.get(p.getUniqueId()).isStart())
@@ -77,6 +93,18 @@ public final class Fishing extends JavaPlugin {
                 }
             }
         }, 2l, 2l);
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     @Override

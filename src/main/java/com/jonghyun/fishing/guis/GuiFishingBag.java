@@ -1,6 +1,8 @@
-package com.jonghyun.fishing.gui;
+package com.jonghyun.fishing.guis;
 
+import com.jonghyun.fishing.Sound;
 import com.jonghyun.fishing.manager.FishingBagManager;
+import com.jonghyun.fishing.utils.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -31,7 +33,7 @@ public class GuiFishingBag implements Listener {
             FishingBagManager bagManager = FishingBagManager.getInstance();
             e.getWhoClicked().getInventory().addItem(bagManager.bagMap.get(p.getUniqueId()).get(e.getRawSlot()));
             bagManager.bagMap.get(p.getUniqueId()).remove(e.getRawSlot());
-            new GuiFishingBag((Player) e.getWhoClicked());
+            new GuiFishingBag((Player) e.getWhoClicked(), p.getPlayer());
         }
     }
 
@@ -47,8 +49,9 @@ public class GuiFishingBag implements Listener {
             i++;
         }
         p.openInventory(inv);
+        SoundUtil.playSound(p, Sound.OPEN_BAG_GUI);
     }
-    public GuiFishingBag(Player p, Player target)
+    public GuiFishingBag(Player p, OfflinePlayer target)
     {
         Inventory inv = Bukkit.createInventory(null, 9 * 6, "[ 낚시가방 ] " + target.getName());
         int i = 0;
@@ -58,6 +61,7 @@ public class GuiFishingBag implements Listener {
             i++;
         }
         p.openInventory(inv);
+        SoundUtil.playSound(p, Sound.OPEN_BAG_GUI);
     }
 
     public boolean hasAvaliableSlot(Player player){

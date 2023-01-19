@@ -1,8 +1,5 @@
 package com.jonghyun.fishing.event.custom;
 
-import com.jonghyun.fishing.Fishing;
-import com.jonghyun.fishing.manager.FishManager;
-import com.jonghyun.fishing.object.MiniGame;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
