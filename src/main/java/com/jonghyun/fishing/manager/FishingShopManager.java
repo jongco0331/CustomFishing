@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class FishingShopManager {
 
@@ -33,6 +34,17 @@ public final class FishingShopManager {
 
     @Getter
     private HashMap<String, FishShop> fishingShops = new HashMap<>();
+
+    public String findShop(String name)
+    {
+        for(Map.Entry<String, FishShop> entry  :fishingShops.entrySet())
+        {
+            if(entry.getValue().getNpc().equals(name))
+                return entry.getKey();
+        }
+        return null;
+    }
+
 
     public void performEvent(Player p, String event)
     {

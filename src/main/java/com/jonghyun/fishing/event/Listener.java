@@ -3,8 +3,10 @@ package com.jonghyun.fishing.event;
 import com.jonghyun.fishing.Fishing;
 import com.jonghyun.fishing.Language;
 import com.jonghyun.fishing.event.custom.PlayerJumpEvent;
+import com.jonghyun.fishing.guis.shop.GuiShop;
 import com.jonghyun.fishing.manager.FishingManager;
 import com.jonghyun.fishing.manager.FishingBagManager;
+import com.jonghyun.fishing.manager.FishingShopManager;
 import com.jonghyun.fishing.objects.fish.LengthFish;
 import com.jonghyun.fishing.objects.MiniGame;
 import org.bukkit.Bukkit;
@@ -12,6 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
@@ -24,6 +27,18 @@ public class Listener implements org.bukkit.event.Listener {
     {
         if(!FishingBagManager.getInstance().bagMap.containsKey(e.getPlayer().getUniqueId()))
             FishingBagManager.getInstance().bagMap.put(e.getPlayer().getUniqueId(), new ArrayList<>());
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractAtEntityEvent e)
+    {
+        if(e.getRightClicked() == null)
+            return;
+        if(e.getRightClicked().getName() == null)
+            return;
+        String shop = FishingShopManager.getInstance().findShop(e.getRightClicked().getName());
+        if(shop != null)
+            new GuiShop(e.getPlayer(), shop);
     }
 
     @EventHandler
