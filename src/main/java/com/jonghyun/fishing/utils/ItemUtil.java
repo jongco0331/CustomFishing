@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 public class ItemUtil {
     static Glow glow = new Glow(255);
@@ -16,6 +17,12 @@ public class ItemUtil {
             if(section.getString("material") == null)
                 return null;
             ItemStack stack = new ItemStack(Material.getMaterial(section.getString("material")));
+            MaterialData materialData = stack.getData();
+            if(section.get("data") != null)
+            {
+                materialData.setData((byte) section.getInt("data"));
+                stack.setData(materialData);
+            }
             ItemMeta meta = stack.getItemMeta();
             if(section.get("flags") != null)
             {

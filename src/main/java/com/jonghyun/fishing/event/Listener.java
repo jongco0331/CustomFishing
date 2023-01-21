@@ -48,13 +48,14 @@ public class Listener implements org.bukkit.event.Listener {
             e.setCancelled(true);
         if(e.getState() == PlayerFishEvent.State.CAUGHT_FISH)
         {
+            e.setCancelled(true);
             if(!e.getPlayer().isOnGround()) {
                 e.getPlayer().sendMessage("§c낚시는 땅에서 해주세요");
-                e.setCancelled(true);
                 return;
             }
             e.setExpToDrop(0);
             e.getCaught().remove();
+            e.getHook().remove();
             FishingManager.getInstance().getMiniGameData().put(e.getPlayer().getUniqueId(), new MiniGame());
             FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setSelectedLoc(new Random().nextInt(15));
             FishingManager.getInstance().getMiniGameData().get(e.getPlayer().getUniqueId()).setHealth(100);

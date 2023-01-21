@@ -2,9 +2,12 @@ package com.jonghyun.fishing.loaders;
 
 import com.jonghyun.fishing.manager.FishingBagManager;
 import com.jonghyun.fishing.utils.FileUtil;
+import net.minecraft.server.v1_12_R1.MojangsonParser;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,8 +34,11 @@ public class FishingBagLoader implements IDataLoader {
             List<ItemStack> fishes = new ArrayList<>();
             for(String key : yaml.getKeys(false))
             {
-                if(yaml.getItemStack(key).getType() != Material.AIR)
-                    fishes.add(yaml.getItemStack(key));
+                try {
+                    NBTTagCompound comp = MojangsonParser.parse(yaml.getString(key));
+                    net.minecraft.server.v1_12_R1.ItemStack stack = new net.minecraft.server.v1_12_R1.ItemStack(comp);
+                    fishes.add(CraftItemStack.asBukkitCopy(stack));
+                } catch(Exception e ) {e.printStackTrace();}
             }
             FishingBagManager.getInstance().bagMap.put(uuid, fishes);
         }
@@ -47,25 +53,30 @@ public class FishingBagLoader implements IDataLoader {
     public void save() {
         for(Map.Entry<UUID, List<ItemStack>> entry : FishingBagManager.getInstance().bagMap.entrySet())
         {
-            File file = new File("plugins/CustomFishing/PlayerData/" + entry.getKey() + ".yml");
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-            file.delete();
-            int i = 0;
-            if(entry.getValue() != null)
+            if(entry.getKey() != null)
             {
-                for(ItemStack stack : entry.getValue())
+                File file = new File("plugins/CustomFishing/PlayerData/" + entry.getKey() + ".yml");
+                YamlConfiguration yaml = new YamlConfiguration();
+                int i = 0;
+                if(entry.getValue() != null)
                 {
-                    if(stack != null)
+                    for(ItemStack stack : entry.getValue())
                     {
-                        yaml.set(i + "", stack);
-                        i++;
+                        if(stack != null)
+                        {
+                            net.minecraft.server.v1_12_R1.ItemStack nms = CraftItemStack.asNMSCopy(stack);
+                            NBTTagCompound tag = new NBTTagCompound();
+                            nms.save(tag);
+                            yaml.set(i + "", tag.toString());
+                            i++;
+                        }
                     }
                 }
-            }
-            try {
-                yaml.save(file);
-            } catch(Exception e) {
-                e.printStackTrace();
+                try {
+                    yaml.save(file);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
